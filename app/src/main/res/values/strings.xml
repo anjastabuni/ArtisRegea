@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Rebly Tabuni</string>
+    <string name="regea_name">Regea Name</string>
+    <string name="description">Descripsion</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_profil">Profile</string>
+    <string name="menu_logout">Logout</string>
+</resources>
