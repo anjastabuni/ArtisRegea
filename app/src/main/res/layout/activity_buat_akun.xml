@@ -33,7 +33,7 @@
 
     <!-- Isi Form -->
     <EditText
-        android:id="@+id/editTextEmail"
+        android:id="@+id/Email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/textViewTitle"
@@ -43,23 +43,24 @@
         android:textColorHint="#546E7A"
         tools:ignore="Autofill,HardcodedText,TextFields,VisualLintTextFieldSize" />
     <EditText
-        android:id="@+id/editTextUsername"
+        android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editTextEmail"
+        android:layout_below="@id/Email"
         android:layout_marginTop="16dp"
-        android:hint="Username"
+        android:hint="Password"
+        android:inputType="textPassword"
         android:minHeight="48dp"
         android:textColorHint="#546E7A"
         tools:ignore="Autofill,HardcodedText,TextFields,VisualLintTextFieldSize" />
 
     <EditText
-        android:id="@+id/editTextPassword"
+        android:id="@+id/confirmPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editTextUsername"
+        android:layout_below="@id/password"
         android:layout_marginTop="8dp"
-        android:hint="Password"
+        android:hint="Confirmasi Password"
         android:inputType="textPassword"
         android:minHeight="48dp"
         android:textColorHint="#546E7A"
@@ -67,10 +68,10 @@
 
     <!-- Tombol Login -->
     <Button
-        android:id="@+id/buttonLogin"
+        android:id="@+id/buttonRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editTextPassword"
+        android:layout_below="@id/confirmPassword"
         android:layout_marginTop="16dp"
         android:background="#2196F3"
         android:text="Register"

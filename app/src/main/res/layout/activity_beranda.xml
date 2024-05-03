@@ -24,7 +24,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:listitem="@layout/example_item">
+        tools:listitem="@layout/example_item"
+        tools:ignore="MissingClass">
     </androidx.recyclerview.widget.RecyclerView>
 
 

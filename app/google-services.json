@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "736963005111",
+    "project_id": "reblymegibtabuni-705fb",
+    "storage_bucket": "reblymegibtabuni-705fb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:736963005111:android:40dab6a145b3f569aedb32",
+        "android_client_info": {
+          "package_name": "com.example.reblymegibtabuni"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVDmAJwMaGq3w7CobLpDIiQHhWPbUtTt0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
