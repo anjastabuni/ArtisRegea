@@ -1,37 +1,31 @@
 package com.example.reblymegibtabuni
 
+import android.annotation.SuppressLint
 import android.content.Intent
-import android.media.Image
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.reblymegibtabuni.databinding.ActivityBerandaBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
 
 class ActivityBeranda : AppCompatActivity() {
     private lateinit var regeaRecyclerView: RecyclerView
-    private lateinit var regeaList: List<Image>
+    private lateinit var regeaList: List<Gambar>
     private lateinit var regeaAdapter: RegeaAdapter
     private lateinit var binding: ActivityBerandaBinding
     private var mStorage: FirebaseStorage? = null
     private var mDatabaseRef: DatabaseReference? = null
     private var mDBListener: ValueEventListener? = null
-
-    companion object{
-        val INTENT_PARCELABLE = "OBJECT_INTENT"
-    }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +35,7 @@ class ActivityBeranda : AppCompatActivity() {
         regeaRecyclerView = findViewById(R.id.img_item_photo)
         regeaRecyclerView.setHasFixedSize(true)
         regeaRecyclerView.layoutManager = LinearLayoutManager(this@ActivityBeranda)
-        binding.myDataLoaderProgressBar.visibility = view.VISIBLE
+        binding.myDataLoaderProgressBar.visibility = View.VISIBLE
         regeaList = ArrayList()
         regeaAdapter = RegeaAdapter(this@ActivityBeranda, regeaList)
         regeaRecyclerView.adapter = regeaAdapter
@@ -54,6 +48,7 @@ class ActivityBeranda : AppCompatActivity() {
                 Toast.makeText(this@ActivityBeranda, error.message, Toast.LENGTH_SHORT).show()
                 binding.myDataLoaderProgressBar.visibility = View.INVISIBLE
             }
+            @SuppressLint("NotifyDataSetChanged")
             override fun onDataChange(snapshot: DataSnapshot){
                 regeaList.clear()
                 for (teacherSnapshot in snapshot.children){
@@ -67,16 +62,6 @@ class ActivityBeranda : AppCompatActivity() {
         }
 
 
-        val recyclerView = findViewById<RecyclerView>(R.id.rv_Regea)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.setHasFixedSize(true)
-        recyclerView.adapter = RegeaAdapter(this, regeaList){
-
-            val intent = Intent(this, ActivityDetail::class.java)
-            intent.putExtra(INTENT_PARCELABLE, it)
-            startActivity(intent)
-
-        }
 
     }
 
@@ -104,6 +89,11 @@ class ActivityBeranda : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mDatabaseRef?.removeEventListener(mDBListener!!)
     }
 }
 

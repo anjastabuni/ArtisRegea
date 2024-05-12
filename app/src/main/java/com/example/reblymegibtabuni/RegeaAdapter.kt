@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class RegeaAdapter(private val context: Context, var regeaList: List<Gambar>)
-    : RecyclerView.Adapter<RegeaAdapter.ListViewHolder>{
+    : RecyclerView.Adapter<RegeaAdapter.ListViewHolder>() {
 
    inner class ListViewHolder(var v: View): RecyclerView.ViewHolder(v) {
         val imgT = v.findViewById<ImageView>(R.id.img_item_photo)
@@ -32,11 +32,11 @@ class RegeaAdapter(private val context: Context, var regeaList: List<Gambar>)
             val  descrip = newList.description
             val imgUri = newList.imageUrl
 
-            val mIntent = Intent(mContext, ActivityDetail::class.java)
+            val mIntent = Intent(context, ActivityDetail::class.java)
             mIntent.putExtra("NAMET", name)
             mIntent.putExtra("DESCRIPT",descrip)
             mIntent.putExtra("IMGHURI", imgUri)
-            mContext.StartActivity(mIntent)
+            context.startActivity(mIntent)
         }
     }
 
