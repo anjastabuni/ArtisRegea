@@ -14,6 +14,7 @@ class ActivityMasuk : AppCompatActivity() {
     private lateinit var firebaseAuth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityMasukBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -56,13 +57,12 @@ class ActivityMasuk : AppCompatActivity() {
     private fun loginUser(email: String, password: String){
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
             if (it.isSuccessful){
-                Intent(this, ActivityBeranda::class.java).also {
-                    it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(it)
-                }
+                val intent = Intent(this, ActivityBeranda::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
             }
             else{
-                Toast.makeText(this, "${it.exception?.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Login failed: ${it.exception?.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -70,10 +70,9 @@ class ActivityMasuk : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         if (firebaseAuth.currentUser != null){
-            Intent(this, ActivityBeranda::class.java).also {
-                it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(it)
-            }
+            val intent = Intent(this, ActivityBeranda::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
     }
 }

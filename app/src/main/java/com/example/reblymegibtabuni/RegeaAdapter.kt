@@ -1,6 +1,7 @@
 package com.example.reblymegibtabuni
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,41 +9,38 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class RegeaAdapter(private val context: Context, private val regea: List<Regea>, val listener: (Regea) -> Unit)
-    : RecyclerView.Adapter<RegeaAdapter.RegeaViewHolder>(){
+class RegeaAdapter(private val context: Context, var regeaList: List<Gambar>)
+    : RecyclerView.Adapter<RegeaAdapter.ListViewHolder>{
 
-    class RegeaViewHolder(view: View): RecyclerView.ViewHolder(view) {
+   inner class ListViewHolder(var v: View): RecyclerView.ViewHolder(v) {
+        val imgT = v.findViewById<ImageView>(R.id.img_item_photo)
+       val nameT = v.findViewById<TextView>(R.id.tv_item_name)
+    }
 
-        val imgRegea = view.findViewById<ImageView>(R.id.img_item_photo)
-        val  nameRegea = view.findViewById<TextView>(R.id.tv_item_name)
-        val  descRegea = view.findViewById<TextView>(R.id.tv_item_description)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
+        var inflater = LayoutInflater.from(parent.context)
+        var v = inflater.inflate(R.layout.example_item, parent, false)
+        return ListViewHolder(v)
+    }
 
-        fun bindview(regea: Regea){
-            imgRegea.setImageResource(regea.imgRegea)
-            nameRegea.text = regea.nameRegea
-            descRegea.text = regea.descRegea
-            itemView.setOnClickListener {
-                listener(regea)
-            }
+    override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
+        val newList = regeaList[position]
+        holder.nameT.text = newList.name
+        holder.imgT.loadImage(newList.imageUrl)
+        holder.v.setOnClickListener {
+            val name = newList.name
+            val  descrip = newList.description
+            val imgUri = newList.imageUrl
+
+            val mIntent = Intent(mContext, ActivityDetail::class.java)
+            mIntent.putExtra("NAMET", name)
+            mIntent.putExtra("DESCRIPT",descrip)
+            mIntent.putExtra("IMGHURI", imgUri)
+            mContext.StartActivity(mIntent)
         }
-
-        private fun listener(regea: Regea) {
-            listener(regea)
-        }
-
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RegeaViewHolder {
-        return RegeaViewHolder(
-            LayoutInflater.from(context).inflate(R.layout.example_item, parent, false)
-        )
+    override fun getItemCount(): Int {
+        return regeaList.size
     }
-
-    override fun getItemCount(): Int = regea.size
-
-    override fun onBindViewHolder(holder: RegeaViewHolder, position: Int) {
-        holder.bindview(regea[position])
-        holder.itemView.setOnClickListener { listener(regea[position]) }
-    }
-
 }

@@ -1,32 +1,24 @@
 package com.example.reblymegibtabuni
 
 import android.os.Bundle
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.example.reblymegibtabuni.databinding.ActivityDetailBinding
 
 class ActivityDetail : AppCompatActivity() {
+    private lateinit var binding: ActivityDetailBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_detail)
+        binding = ActivityDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        val intss = intent
+        var nameT = intss.getStringExtra("NAMET")
+        var desT = intss.getStringExtra("DESCRIPT")
+        var imgT = intss.getStringExtra("IMGURI")
 
-        val regea = intent.getParcelableExtra<Regea>(ActivityBeranda.INTENT_PARCELABLE)
+        binding.itemname.text = nameT
+        binding.itemdescription.text = desT
+        binding.imgitemphoto.loadImage(imgT)
 
-        val imgRegea = findViewById<ImageView>(R.id.img_item_photo)
-        val nameRegea = findViewById<TextView>(R.id.tv_item_name)
-        val descRegea = findViewById<TextView>(R.id.tv_item_description)
-
-        imgRegea.setImageResource(regea?.imgRegea!!)
-        nameRegea.text = regea.nameRegea
-        descRegea.text = regea.descRegea
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return true
     }
 }

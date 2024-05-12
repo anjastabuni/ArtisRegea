@@ -1,16 +1,32 @@
 package com.example.reblymegibtabuni
 
 import android.content.Intent
+import android.media.Image
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.reblymegibtabuni.databinding.ActivityBerandaBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class ActivityBeranda : AppCompatActivity() {
+    private lateinit var regeaRecyclerView: RecyclerView
+    private lateinit var regeaList: List<Image>
+    private lateinit var regeaAdapter: RegeaAdapter
+    private lateinit var binding: ActivityBerandaBinding
+    private var mStorage: FirebaseStorage? = null
+    private var mDatabaseRef: DatabaseReference? = null
+    private var mDBListener: ValueEventListener? = null
 
     companion object{
         val INTENT_PARCELABLE = "OBJECT_INTENT"
@@ -19,81 +35,37 @@ class ActivityBeranda : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_beranda)
+        binding = ActivityBerandaBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.itemId)
-        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.menu_logout -> {
-                    val intentMasuk = Intent(this, ActivityMasuk::class.java)
-                    startActivity(intentMasuk)
-                    true
+        regeaRecyclerView = findViewById(R.id.img_item_photo)
+        regeaRecyclerView.setHasFixedSize(true)
+        regeaRecyclerView.layoutManager = LinearLayoutManager(this@ActivityBeranda)
+        binding.myDataLoaderProgressBar.visibility = view.VISIBLE
+        regeaList = ArrayList()
+        regeaAdapter = RegeaAdapter(this@ActivityBeranda, regeaList)
+        regeaRecyclerView.adapter = regeaAdapter
+
+//        set firebase database
+        mStorage = FirebaseStorage.getInstance()
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("regea")
+        mDBListener = mDatabaseRef!!.addValueEventListener(object : ValueEventListener){
+            override fun onCancelled(error: DatabaseError){
+                Toast.makeText(this@ActivityBeranda, error.message, Toast.LENGTH_SHORT).show()
+                binding.myDataLoaderProgressBar.visibility = View.INVISIBLE
+            }
+            override fun onDataChange(snapshot: DataSnapshot){
+                regeaList.clear()
+                for (teacherSnapshot in snapshot.children){
+                    val upload = teacherSnapshot.getValue(Gambar::class.java)
+                    upload!!.key = teacherSnapshot.key
+                    regeaList.add(upload)
                 }
-                R.id.menu_profil -> {
-                    val intentProfil = Intent(this, ActivityProfil::class.java)
-                    startActivity(intentProfil)
-                    true
-                }
-                R.id.menu_home -> {
-                    val intentBeranda = Intent(this, ActivityBeranda::class.java)
-                    startActivity(intentBeranda)
-                    true
-                }
-                else -> false
+                regeaAdapter.notifyDataSetChanged()
+                binding.myDataLoaderProgressBar.visibility = View.GONE
             }
         }
 
-
-
-        val regeaList = listOf(
-            Regea(
-                R.drawable.bobmarley,
-                "Robert Nesta Marley",
-                "Lagu-lagu hits : No Woman No Cry, Redemption Song, Buffalo Soldier, One Love"
-            ),
-            Regea(
-                R.drawable.alton,
-                "Alton Nehemiah Ellis",
-                "Lagu-lagu hits : Girl I've Got a Date, Dance Crasher, I'm Still in Love with You, Why Birds Follow Spring"
-            ),
-            Regea(
-                R.drawable.dennis,
-                "Dennis Emmanuel Brown",
-                "Lagu-lagu hits : Money in My Pocket, Revolution, Here I Come, Westbound Train"
-            ),
-            Regea(
-                R.drawable.desmond,
-                "Desmond Adolphus Dekker",
-                "Lagu-lagu hits : King of Ska, Rudy Got Soul, Sing a Little Song, Rude Boy Train"
-            ),
-            Regea(
-                R.drawable.gregory,
-                "Gregory Anthony Isaacs",
-                "Lagu-lagu hits : Night Nurse, My Number One, Cool Down the Pace, Rumours"
-            ),
-            Regea(
-                R.drawable.jimmy,
-                "James Chambers",
-                "Lagu-lagu hits : I Can See Clearly Now, Many Rivers to Cross, The Harder They Come, Reggae Night"
-            ),
-            Regea(
-                R.drawable.michael,
-                "Michael Rose",
-                "Lagu-lagu hits : Sponji Reggae, I Love King Selassie, Illegal, Shoot Out"
-            ),
-            Regea(
-                R.drawable.peter,
-                "Winston Hubert McIntosh",
-                "Lagu-lagu hits : Waiting in Vain, Legalize It, Would You Be Loved, Jamming"
-            ),
-            Regea(
-                R.drawable.toots,
-                "Frederick Nathaniel Hibbert",
-                "Lagu-lagu hits : Pressure Drop, Monkey Man, Louie Louie, Funky Kingston"
-            )
-
-        )
 
         val recyclerView = findViewById<RecyclerView>(R.id.rv_Regea)
         recyclerView.layoutManager = LinearLayoutManager(this)

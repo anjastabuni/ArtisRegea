@@ -52,7 +52,13 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.database)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    //noinspection UseTomlInstead
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    //noinspection UseTomlInstead
+    annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
+
 }
